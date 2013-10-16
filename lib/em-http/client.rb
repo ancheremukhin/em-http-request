@@ -22,7 +22,7 @@ module EventMachine
     CRLF="\r\n"
 
     attr_accessor :state, :response
-    attr_reader   :response_header, :error, :content_charset, :req, :cookies
+    attr_reader   :response_header, :error, :content_charset, :req, :cookies, :certs
 
     def initialize(conn, options)
       @conn = conn
@@ -32,7 +32,7 @@ module EventMachine
       @headers   = nil
       @cookies   = []
       @cookiejar = CookieJar.new
-
+      @certs = []
       reset!
     end
 
@@ -117,6 +117,10 @@ module EventMachine
       else
         on_error(reason || 'connection closed by server')
       end
+    end
+
+    def ssl_verify_peer(cert)
+      @certs << cert
     end
 
     def on_error(msg = nil)
