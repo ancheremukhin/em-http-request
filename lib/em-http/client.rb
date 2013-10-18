@@ -48,8 +48,8 @@ module EventMachine
     def last_effective_url; @req.uri; end
     def redirects; @req.followed; end
     def peer; @conn.peer; end
-    def peer_cert; @conn.get_peer_cert; end
-    def peer_cert_chain; @conn.get_peer_cert_chain; end
+    def peer_cert; @conn.peer_cert; end
+    def peer_cert_chain; @conn.peer_cert_chain; end
 
     def connection_completed
       @state = :response_header
