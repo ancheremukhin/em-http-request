@@ -139,6 +139,9 @@ module EventMachine
       Socket.unpack_sockaddr_in(@peer)[1] rescue nil
     end
 
+    def peer_cert; @conn.get_peer_cert; end
+    def peer_cert_chain; @conn.get_peer_cert_chain; end
+
     def receive_data(data)
       begin
         @p << data
