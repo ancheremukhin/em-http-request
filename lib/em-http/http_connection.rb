@@ -30,11 +30,6 @@ module EventMachine
     def unbind(reason=nil)
       @parent.unbind(reason)
     end
-
-    def ssl_verify_peer(cert)
-      @parent.ssl_verify_peer cert
-      true
-    end
   end
 
   class HttpConnection
@@ -166,7 +161,6 @@ module EventMachine
     end
 
     def start
-      p @connopts.tls  if client && client.req.ssl?
       @conn.start_tls(@connopts.tls) if client && client.req.ssl?
       @conn.succeed
     end
@@ -212,10 +206,6 @@ module EventMachine
 
     def stream_file_data(filename, args = {})
       @conn.stream_file_data filename, args
-    end
-
-    def ssl_verify_peer(cert)
-      client.ssl_verify_peer(cert)
     end
 
     private

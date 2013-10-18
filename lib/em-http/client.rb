@@ -22,7 +22,7 @@ module EventMachine
     CRLF="\r\n"
 
     attr_accessor :state, :response
-    attr_reader   :response_header, :error, :content_charset, :req, :cookies, :certs
+    attr_reader   :response_header, :error, :content_charset, :req, :cookies
 
     def initialize(conn, options)
       @conn = conn
@@ -32,7 +32,6 @@ module EventMachine
       @headers   = nil
       @cookies   = []
       @cookiejar = CookieJar.new
-      @certs = []
       reset!
     end
 
@@ -49,6 +48,8 @@ module EventMachine
     def last_effective_url; @req.uri; end
     def redirects; @req.followed; end
     def peer; @conn.peer; end
+    def peer_cert; @conn.get_peer_cert; end
+    def peer_cert_chain; @conn.get_peer_cert_chain; end
 
     def connection_completed
       @state = :response_header
@@ -117,10 +118,6 @@ module EventMachine
       else
         on_error(reason || 'connection closed by server')
       end
-    end
-
-    def ssl_verify_peer(cert)
-      @certs << cert
     end
 
     def on_error(msg = nil)
